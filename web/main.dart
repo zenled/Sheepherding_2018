@@ -1,5 +1,14 @@
 import 'dart:html';
 
+import 'game.dart';
+
+Game game;
+
 void main() {
-  querySelector('#output').text = 'Your Dart app is running.';
+  game = new Game();
+
+  game.drawScene();
+  game.drawScene();
+  game.drawScene();
+  game.drawScene();
 }
