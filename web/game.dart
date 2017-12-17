@@ -6,6 +6,7 @@ import 'matrix4.dart';
 import 'shaders/fragment_shader.dart';
 import 'shaders/vertex_shader.dart';
 import 'game_objects/player.dart';
+import 'game_objects/pyramid.dart';
 
 class Game {
   CanvasElement _canvas;
@@ -21,6 +22,7 @@ class Game {
   List<Matrix4> mvStack = <Matrix4>[];
 
   Player player;
+  Pyramid piramid;
 
   Game() {
     _canvas = querySelector("#canvas");
@@ -28,13 +30,39 @@ class Game {
 
     // inits shaders
     //_program = _gl.createProgram();
-    _program = new GlProgram(
-      fraggment_shader_source,
-      vertex_shader_source,
-      ['aVertexPosition', 'aVertexColor'],
-      ['uMVMatrix', 'uPMatrix'],
-      _gl,
-    );
+    // _program = new GlProgram(
+    //   fraggment_shader_source,
+    //   vertex_shader_source,
+    //   ['aVertexPosition', 'aVertexColor'],
+    //   ['uMVMatrix', 'uPMatrix'],
+    //   _gl,
+    // );
+        _program = new GlProgram(
+        '''
+          precision mediump float;
+
+          varying vec4 vColor;
+
+          void main(void) {
+            gl_FragColor = vColor;
+          }
+        ''',
+        '''
+          attribute vec3 aVertexPosition;
+          attribute vec4 aVertexColor;
+
+          uniform mat4 uMVMatrix;
+          uniform mat4 uPMatrix;
+
+          varying vec4 vColor;
+
+          void main(void) {
+              gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+              vColor = aVertexColor;
+          }
+        ''',
+        ['aVertexPosition', 'aVertexColor'],
+        ['uMVMatrix', 'uPMatrix'], _gl);
     _gl.useProgram(_program.program);
 
     // String vertexShaderSource = vertex_shader_source;
@@ -48,6 +76,7 @@ class Game {
     mvMatrix = new Matrix4()..identity();
 
     player = new Player(_gl);
+    piramid = new Pyramid(_gl);
   }
 
   void mvPushMatrix() => mvStack.add(new Matrix4.fromMatrix(mvMatrix));
@@ -75,6 +104,10 @@ class Game {
       vertex: _program.attributes['aVertexPosition'],
       color: _program.attributes['aVertexColor'],
     );
+        piramid.draw(
+        setUniforms: setMatrixUniforms,
+        vertex: _program.attributes['aVertexPosition'],
+        color: _program.attributes['aVertexColor'], gl: _gl);
     mvPopMatrix();
   }
 

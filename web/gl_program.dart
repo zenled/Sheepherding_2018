@@ -42,8 +42,12 @@ class GlProgram {
     gl.attachShader(program, fragShader);
     gl.linkProgram(program);
 
+    var x = gl.getProgramParameter(program, LINK_STATUS);
+
     if (!gl.getProgramParameter(program, LINK_STATUS)) {
       print("Could not initialise shaders");
+      String s = gl.getProgramInfoLog(program);
+      int a = 1;
     }
 
     for (String attrib in attributeNames) {
