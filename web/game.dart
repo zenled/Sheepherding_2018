@@ -66,7 +66,8 @@ class Game {
     //------------------------
     mvPushMatrix();
 
-    mvMatrix.translate(<double>[-1.5, 0.0, 7.0]);
+    //mvMatrix.translate(<double>[-1.5, 0.0, 7.0]);
+    mvMatrix.translate([-1.5, 0.0, -8.0]);
 
     mvPushMatrix();
     player.draw(
@@ -74,7 +75,6 @@ class Game {
       vertex: _program.attributes['aVertexPosition'],
       color: _program.attributes['aVertexColor'],
     );
-
     mvPopMatrix();
   }
 

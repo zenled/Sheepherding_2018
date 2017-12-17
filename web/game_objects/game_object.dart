@@ -7,6 +7,7 @@ abstract class GameObject {
   web_gl.RenderingContext _gl;
 
   web_gl.Buffer _vertexPositionBuffer;
+  int _numOfVertices;
   web_gl.Buffer _vertexColorBuffer;
 
   double x;
@@ -16,6 +17,7 @@ abstract class GameObject {
   GameObject(this._gl);
 
   void setVertices(List<double> vertices) {
+    _numOfVertices = vertices.length;
     _vertexPositionBuffer = _gl.createBuffer();
     _gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexPositionBuffer);
     _gl.bufferData(
@@ -57,6 +59,6 @@ abstract class GameObject {
     }
 
     if (setUniforms != null) setUniforms();
-    _gl.drawArrays(web_gl.TRIANGLES, 0, 18);
+    _gl.drawArrays(web_gl.TRIANGLES, 0, _numOfVertices);
   }
 }
