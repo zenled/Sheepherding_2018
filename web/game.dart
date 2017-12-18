@@ -5,8 +5,8 @@ import 'gl_program.dart';
 import 'matrix4.dart';
 import 'shaders/fragment_shader.dart';
 import 'shaders/vertex_shader.dart';
-import 'game_objects/player.dart';
-import 'game_objects/pyramid.dart';
+import 'game_objects/example_implementation.dart';
+import 'game_objects/game_object_stuff.dart' as game_object_stuff;
 
 class Game {
   CanvasElement _canvas;
@@ -21,8 +21,7 @@ class Game {
   Matrix4 mvMatrix;
   List<Matrix4> mvStack = <Matrix4>[];
 
-  Player player;
-  Pyramid piramid;
+  ExampleImplementation exampleImplementation;
 
   Game() {
     _canvas = querySelector("#canvas");
@@ -75,8 +74,12 @@ class Game {
 
     mvMatrix = new Matrix4()..identity();
 
-    player = new Player(_gl);
-    piramid = new Pyramid(_gl);
+    game_object_stuff.gl = _gl;
+    game_object_stuff.setUniforms = setMatrixUniforms;
+    game_object_stuff.attributePointer_vertex = _program.attributes['aVertexPosition'];
+    game_object_stuff.attributePointer_color = _program.attributes['aVertexColor'];
+
+    exampleImplementation = new ExampleImplementation();
   }
 
   void mvPushMatrix() => mvStack.add(new Matrix4.fromMatrix(mvMatrix));
@@ -96,18 +99,19 @@ class Game {
     mvPushMatrix();
 
     //mvMatrix.translate(<double>[-1.5, 0.0, 7.0]);
-    mvMatrix.translate([-1.5, 0.0, -8.0]);
+    mvMatrix.translate([-1.5, 0.0, -7.0]);
 
     mvPushMatrix();
-    player.draw(
-      setUniforms: setMatrixUniforms(),
-      vertex: _program.attributes['aVertexPosition'],
-      color: _program.attributes['aVertexColor'],
-    );
-        piramid.draw(
-        setUniforms: setMatrixUniforms,
-        vertex: _program.attributes['aVertexPosition'],
-        color: _program.attributes['aVertexColor'], gl: _gl);
+    // player.draw(
+    //   setUniforms: setMatrixUniforms(),
+    //   vertex: _program.attributes['aVertexPosition'],
+    //   color: _program.attributes['aVertexColor'],
+    // );
+    //     piramid.draw(
+    //     setUniforms: setMatrixUniforms,
+    //     vertex: _program.attributes['aVertexPosition'],
+    //     color: _program.attributes['aVertexColor'], gl: _gl);
+    exampleImplementation.draw();
     mvPopMatrix();
   }
 

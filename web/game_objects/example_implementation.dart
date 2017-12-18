@@ -2,9 +2,9 @@ import 'dart:web_gl' as web_gl;
 
 import 'game_object.dart';
 
-class Player extends GameObject {
-  Player(web_gl.RenderingContext gl):super(gl) {
-    var vertices = [
+class ExampleImplementation extends GameObject {
+  ExampleImplementation() : super() {
+    List<double> vertices = <double>[
       // Front face
       0.0, 1.0, 0.0,
       -1.0, -1.0, 1.0,
@@ -33,13 +33,12 @@ class Player extends GameObject {
       1.0, -1.0, 1.0,
       -1.0, -1.0, 1.0,
     ];
-
-    super.setVertices(vertices);
+    super.setVerticies(vertices);
 
     var colors = [
       // Front face
       1.0, 0.0, 0.0, 1.0,
-      0.0, 1.0, 0.0, 1.0,
+      1.0, 0.0, 0.0, 1.0,
       0.0, 0.0, 1.0, 1.0,
 
       // Right face

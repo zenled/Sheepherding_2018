@@ -1,26 +1,21 @@
-import 'dart:typed_data';
 import 'dart:web_gl' as web_gl;
+import 'dart:typed_data';
 
-import 'package:meta/meta.dart';
+import 'game_object_stuff.dart';
 
-abstract class GameObject {
-  web_gl.RenderingContext _gl;
-
+class GameObject {
+  int _numOfVerticies;
   web_gl.Buffer _vertexPositionBuffer;
-  int _numOfVertices;
+  web_gl.Buffer _vertexNormalBuffer;
+  web_gl.Buffer _textureCoordinateBuffer;
   web_gl.Buffer _vertexColorBuffer;
 
-  double x;
-  double y;
-  double z; 
+  void setVerticies(List<double> vertices) {
+    _numOfVerticies = vertices.length ~/ 3;
 
-  GameObject(this._gl);
-
-  void setVertices(List<double> vertices) {
-    _numOfVertices = vertices.length;
-    _vertexPositionBuffer = _gl.createBuffer();
-    _gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexPositionBuffer);
-    _gl.bufferData(
+    _vertexPositionBuffer = gl.createBuffer();
+    gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexPositionBuffer);
+    gl.bufferData(
       web_gl.ARRAY_BUFFER,
       new Float32List.fromList(vertices),
       web_gl.STATIC_DRAW,
@@ -28,37 +23,57 @@ abstract class GameObject {
   }
 
   void setColors(List<double> colors) {
-    _vertexColorBuffer = _gl.createBuffer();
-    _gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexColorBuffer);
-    _gl.bufferData(
+    _vertexColorBuffer = gl.createBuffer();
+    gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexColorBuffer);
+    gl.bufferData(
       web_gl.ARRAY_BUFFER,
       new Float32List.fromList(colors),
       web_gl.STATIC_DRAW,
     );
   }
 
-  void draw({int vertex, int normal, int coord, int color, setUniforms()}) {
-    if (vertex != null) {
-      _gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexPositionBuffer);
-      _gl.vertexAttribPointer(vertex, 3, web_gl.FLOAT, false, 0, 0);
+  void setTextureCoordinates(List<double> normals) {
+    _vertexNormalBuffer = gl.createBuffer();
+    gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexNormalBuffer);
+    gl.bufferData(
+      web_gl.ARRAY_BUFFER,
+      new Float32List.fromList(normals),
+      web_gl.STATIC_DRAW,
+    );
+  }
+
+  void setNormals(List<double> textureCoordinates) {
+    _textureCoordinateBuffer = gl.createBuffer();
+    gl.bindBuffer(web_gl.ARRAY_BUFFER, _textureCoordinateBuffer);
+    gl.bufferData(
+      web_gl.ARRAY_BUFFER,
+      new Float32List.fromList(textureCoordinates),
+      web_gl.STATIC_DRAW,
+    );
+  }
+
+  void draw({int normal, int coord}) {
+    if (_vertexPositionBuffer != null) {
+      gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexPositionBuffer);
+      gl.vertexAttribPointer(attributePointer_vertex, 3, web_gl.FLOAT, false, 0, 0);
     }
 
-    // if (normal != null) {
-    //   _gl.bindBuffer(ARRAY_BUFFER, normalBuffer);
-    //   gl.vertexAttribPointer(normal, 3, FLOAT, false, 0, 0);
-    // }
-
-    // if (coord != null) {
-    //   gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
-    //   gl.vertexAttribPointer(coord, 2, FLOAT, false, 0, 0);
-    // }
-
-    if (color != null) {
-      _gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexColorBuffer);
-      _gl.vertexAttribPointer(color, 4, web_gl.FLOAT, false, 0, 0);
+    if (normal != null) {
+      gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexNormalBuffer);
+      gl.vertexAttribPointer(normal, 3, web_gl.FLOAT, false, 0, 0);
     }
 
-    if (setUniforms != null) setUniforms();
-    _gl.drawArrays(web_gl.TRIANGLES, 0, _numOfVertices);
+    if (coord != null) {
+      gl.bindBuffer(web_gl.ARRAY_BUFFER, _textureCoordinateBuffer);
+      gl.vertexAttribPointer(coord, 2, web_gl.FLOAT, false, 0, 0);
+    }
+
+    if (_vertexColorBuffer != null) {
+      gl.bindBuffer(web_gl.ARRAY_BUFFER, _vertexColorBuffer);
+      gl.vertexAttribPointer(attributePointer_color, 4, web_gl.FLOAT, false, 0, 0);
+    }
+
+    setUniforms();
+    gl.drawArrays(web_gl.TRIANGLES, 0, _numOfVerticies);
   }
 }
