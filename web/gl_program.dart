@@ -1,6 +1,6 @@
 // Copyright (c) 2013, John Thomas McDole.
 
-import 'dart:web_gl';
+part of 'game.dart';
 
 /*
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,12 +42,8 @@ class GlProgram {
     gl.attachShader(program, fragShader);
     gl.linkProgram(program);
 
-    var x = gl.getProgramParameter(program, LINK_STATUS);
-
     if (!gl.getProgramParameter(program, LINK_STATUS)) {
       print("Could not initialise shaders");
-      String s = gl.getProgramInfoLog(program);
-      int a = 1;
     }
 
     for (String attrib in attributeNames) {
