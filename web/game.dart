@@ -12,7 +12,7 @@ import 'keyboard_handler.dart';
 part 'game_objects/game_object.dart';
 part 'game_objects/root_object.dart';
 
-part 'game_objects/player.dart';
+part 'game_objects/player/player.dart';
 
 part 'game_objects/pyramid.dart';
 
