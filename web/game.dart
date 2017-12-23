@@ -107,7 +107,7 @@ class Game {
     // Player pyramid = new Player();
     // pyramid.translateZ(-10.0);
     Player player = new Player();
-    player.translateZ(-10.0);
+    player.z = -10.0;
 
     rootObject.addChild(player);
   }

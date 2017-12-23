@@ -42,15 +42,15 @@ abstract class GameObject {
   }
 
   void rotateX(double value) {
-    rotationX += value;
+    rotationX += value % 360.0;
   }
 
   void rotateY(double value) {
-    rotationY += value;
+    rotationY += value % 360.0;
   }
 
   void rotateZ(double value) {
-    rotationZ += value;
+    rotationZ += value % 360.0;
   }
 
   GameObject get parent => _parent;
@@ -99,11 +99,11 @@ abstract class GameObject {
   void draw() {
     mvPushMatrix();
 
+    mvMatrix.translate(<double>[x, y, z]);
+
     mvMatrix.rotateX(radians(rotationX));
     mvMatrix.rotateY(radians(rotationY));
     mvMatrix.rotateZ(radians(rotationZ));
-
-    mvMatrix.translate(<double>[x, y, z]);
 
     for (GameObject child in children) {
       child.draw();
