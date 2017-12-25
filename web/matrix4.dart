@@ -1,4 +1,5 @@
-part of 'game.dart';
+import 'dart:typed_data';
+import 'dart:math';
 
 /**
  * Thrown if you attempt to normalize a zero length vector.

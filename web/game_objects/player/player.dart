@@ -1,4 +1,5 @@
-part of game;
+import '../game_object.dart';
+import '../pyramid.dart';
 
 class Player extends GameObject {
   static const xSpeed = 0.04;

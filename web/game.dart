@@ -1,60 +1,19 @@
-library game;
-
 import 'dart:html';
 import 'dart:web_gl';
 import 'dart:async';
-import 'dart:typed_data';
-import 'dart:math';
 
 // import shaders
 import 'shaders/fragment_shader.dart' as fragment_shader;
 import 'shaders/vertex_shader.dart' as vertex_shader;
 
-//
+// import other stuff
+import 'global.dart';
+import 'matrix4.dart';
 import 'input_handler.dart';
 
-// game objects
-part 'game_objects/game_object.dart';
-part 'game_objects/root_object.dart';
-
-part 'game_objects/player/player.dart';
-
-part 'game_objects/pyramid.dart';
-
-// math
-part 'matrix4.dart';
-
-CanvasElement canvas;
-RenderingContext gl;
-
-Game game;
-
-void initGame() {
-  canvas = querySelector("#canvas");
-  gl = canvas.getContext3d();
-
-  game = new Game();
-  game.startGame();
-}
-
-// Global ------------------------------------------------------------------------------------
-int get _attributePointerVertex => game._attributePointerVertex;
-
-int get _attributePointerColor => game._attributePointerColor;
-
-Matrix4 get pMatrix => game._pMatrix;
-
-Matrix4 get mvMatrix => game._mvMatrix;
-
-mvPushMatrix() => game.mvPushMatrix();
-
-mvPopMatrix() => game.mvPopMatrix();
-
-setMatrixUniforms() => game.setMatrixUniforms();
-
-InputHandler get inputHandler => game._inputHandler;
-
-//------------------------------------------------------------------------------------------
+import 'game_objects/root_object.dart';
+import 'game_objects/player/player.dart';
+import 'game_objects/pyramid.dart';
 
 class Game {
   Matrix4 _pMatrix;
@@ -103,12 +62,12 @@ class Game {
     }
 
     // sets attribute pointers
-    _attributePointerVertex =
-        gl.getAttribLocation(_program, vertex_shader.attribute_neme_vertexPosition);
+    _attributePointerVertex = gl.getAttribLocation(
+        _program, vertex_shader.attribute_neme_vertexPosition);
     gl.enableVertexAttribArray(_attributePointerVertex);
 
-    _attributePointerColor =
-        gl.getAttribLocation(_program, vertex_shader.attribute_name_vertexColor);
+    _attributePointerColor = gl.getAttribLocation(
+        _program, vertex_shader.attribute_name_vertexColor);
     gl.enableVertexAttribArray(_attributePointerColor);
 
     // sets uniform Locations
@@ -129,6 +88,16 @@ class Game {
     // pyramid.translateZ(-10.0);
     Player player = new Player();
     player.z = -10.0;
+
+    Pyramid pyramid = new Pyramid();
+    pyramid.translateZ(-20.0);
+    pyramid.translateX(5.0);
+    rootObject.addChild(pyramid);
+
+    Pyramid pyramid1 = new Pyramid();
+    pyramid1.translateZ(-20.0);
+    pyramid1.translateX(-5.0);
+    rootObject.addChild(pyramid1);
 
     rootObject.addChild(player);
   }
@@ -163,12 +132,29 @@ class Game {
   }
 
   void startGame() {
-    _timer = new Timer.periodic(
-      new Duration(milliseconds: 15),
-      (_) {
-        _handleUserInput();
-        _drawScene();
-      },
-    );
+    window.animationFrame.then(_tick);
+    // _timer = new Timer.periodic(
+    //   new Duration(milliseconds: 15),
+    //   (_) {
+    //     _handleUserInput();
+    //     _drawScene();
+    //   },
+    // );
   }
+
+  void _tick(_) {
+    window.animationFrame.then(_tick);
+    _handleUserInput();
+    _drawScene();
+  }
+
+  int get attributePointerVertex => _attributePointerVertex;
+
+  int get attributePointerColor => _attributePointerColor;
+
+  Matrix4 get pMatrix => _pMatrix;
+
+  Matrix4 get mvMatrix => _mvMatrix;
+
+  InputHandler get inputHandler => _inputHandler;
 }

@@ -1,8 +1,13 @@
-//part of 'game.dart';
+import 'dart:html';
 
+import 'global.dart' as global;
 import 'game.dart';
 
 
 void main() {
-  initGame();
+  global.canvas = querySelector("#canvas");
+  global.gl = global.canvas.getContext3d();
+
+  global.game = new Game();
+  global.game.startGame();
 }

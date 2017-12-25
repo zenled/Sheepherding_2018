@@ -1,4 +1,13 @@
-part of game;
+import 'dart:web_gl';
+import 'dart:typed_data';
+
+import '../global.dart' as global;
+import '../input_handler.dart';
+import '../matrix4.dart';
+
+export '../global.dart';
+export '../input_handler.dart';
+export '../matrix4.dart';
 
 abstract class GameObject {
   Buffer vertexBuffer;
@@ -99,9 +108,9 @@ abstract class GameObject {
   void setVertexBuffer(List<double> vertices) {
     numOfVerticies = vertices.length ~/ 3;
 
-    vertexBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(
+    vertexBuffer = global.gl.createBuffer();
+    global.gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
+    global.gl.bufferData(
       ARRAY_BUFFER,
       new Float32List.fromList(vertices),
       STATIC_DRAW,
@@ -109,9 +118,9 @@ abstract class GameObject {
   }
 
   void setColorBuffer(List<double> colors) {
-    colorBuffer = gl.createBuffer();
-    gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-    gl.bufferData(
+    colorBuffer = global.gl.createBuffer();
+    global.gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+    global.gl.bufferData(
       ARRAY_BUFFER,
       new Float32List.fromList(colors),
       STATIC_DRAW,
@@ -129,21 +138,21 @@ abstract class GameObject {
   }
 
   void draw() {
-    mvPushMatrix();
+    global.mvPushMatrix();
 
-    mvMatrix.translate(<double>[x, y, z]);
+    global.mvMatrix.translate(<double>[x, y, z]);
 
-    mvMatrix.rotateX(radians(rotationX));
-    mvMatrix.rotateY(radians(rotationY));
-    mvMatrix.rotateZ(radians(rotationZ));
+    global.mvMatrix.rotateX(radians(rotationX));
+    global.mvMatrix.rotateY(radians(rotationY));
+    global.mvMatrix.rotateZ(radians(rotationZ));
 
     for (GameObject child in children) {
       child.draw();
     }
 
     if (vertexBuffer != null) {
-      gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-      gl.vertexAttribPointer(_attributePointerVertex, 3, FLOAT, false, 0, 0);
+      global.gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
+      global.gl.vertexAttribPointer(global.attributePointerVertex, 3, FLOAT, false, 0, 0);
     }
 
     // if (normal != null) {
@@ -157,13 +166,13 @@ abstract class GameObject {
     // }
 
     if (colorBuffer != null) {
-      gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      gl.vertexAttribPointer(_attributePointerColor, 4, FLOAT, false, 0, 0);
+      global.gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
+      global.gl.vertexAttribPointer(global.attributePointerColor, 4, FLOAT, false, 0, 0);
     }
 
-    setMatrixUniforms();
-    gl.drawArrays(TRIANGLES, 0, numOfVerticies);
+    global.setMatrixUniforms();
+    global.gl.drawArrays(TRIANGLES, 0, numOfVerticies);
 
-    mvPopMatrix();
+    global.mvPopMatrix();
   }
 }
