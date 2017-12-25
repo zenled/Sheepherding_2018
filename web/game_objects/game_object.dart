@@ -5,6 +5,7 @@ import '../global.dart' as global;
 import '../input_handler.dart';
 import '../matrix4.dart';
 
+export 'game_object.dart';
 export '../global.dart';
 export '../input_handler.dart';
 export '../matrix4.dart';

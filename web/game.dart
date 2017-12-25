@@ -13,6 +13,7 @@ import 'input_handler.dart';
 
 import 'game_objects/root_object.dart';
 import 'game_objects/player/player.dart';
+import 'game_objects/main_camera.dart';
 import 'game_objects/pyramid.dart';
 
 class Game {
@@ -34,6 +35,8 @@ class Game {
 
   // game objects
   RootObject rootObject;
+  MainCamera mainCamera;
+  Player player;
 
   Game() {
     // inits Matrix-es
@@ -86,8 +89,10 @@ class Game {
 
     // Player pyramid = new Player();
     // pyramid.translateZ(-10.0);
-    Player player = new Player();
+    player = new Player();
     player.z = -10.0;
+
+    mainCamera = new MainCamera(player);
 
     Pyramid pyramid = new Pyramid();
     pyramid.translateZ(-20.0);
@@ -121,8 +126,7 @@ class Game {
     gl.enable(DEPTH_TEST);
     gl.disable(BLEND);
 
-    _pMatrix =
-        Matrix4.perspective(45.0, canvas.width / canvas.height, 0.1, 100.0);
+    mainCamera.updatePMatrix();
 
     rootObject.draw();
   }
@@ -153,6 +157,8 @@ class Game {
   int get attributePointerColor => _attributePointerColor;
 
   Matrix4 get pMatrix => _pMatrix;
+
+  void set pMatrix(Matrix4 value) => _pMatrix = value;
 
   Matrix4 get mvMatrix => _mvMatrix;
 
