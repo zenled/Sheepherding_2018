@@ -12,7 +12,7 @@ import 'keyboard_handler.dart';
 part 'game_objects/game_object.dart';
 part 'game_objects/root_object.dart';
 
-part 'game_objects/player.dart';
+part 'game_objects/player/player.dart';
 
 part 'game_objects/pyramid.dart';
 
@@ -107,7 +107,7 @@ class Game {
     // Player pyramid = new Player();
     // pyramid.translateZ(-10.0);
     Player player = new Player();
-    player.translateZ(-10.0);
+    player.z = -10.0;
 
     rootObject.addChild(player);
   }
