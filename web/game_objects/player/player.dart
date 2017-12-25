@@ -1,3 +1,5 @@
+library Player;
+
 import '../game_object.dart';
 import '../pyramid.dart';
 
@@ -5,7 +7,7 @@ class Player extends GameObject {
   static const xSpeed = 0.04;
   static const ySpeed = 0.04;
   static const zSpeed = 0.04;
-  
+
   static const yRotationSpeed = 2.0;
 
   // how many degrees shotld the drone tilt (this does not affect position)
@@ -32,7 +34,7 @@ class Player extends GameObject {
       translateZ(zSpeed);
       droneBody.rotationX = movingTilt_moving;
       preserveTiltFB = true;
-    } 
+    }
     if (!preserveTiltFB) {
       droneBody.rotationX = movingTilt_notMoving;
     }
@@ -48,7 +50,7 @@ class Player extends GameObject {
       translateX(-xSpeed);
       droneBody.rotationZ = movingTilt_moving;
       preserveTiltLR = true;
-    } 
+    }
     if (!preserveTiltLR) {
       droneBody.rotationZ = movingTilt_notMoving;
     }

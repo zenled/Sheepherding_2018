@@ -18,6 +18,8 @@ int get attributePointerColor => game.attributePointerColor;
 
 Matrix4 get pMatrix => game.pMatrix;
 
+void set pMatrix(Matrix4 value) => game.pMatrix = value;
+
 Matrix4 get mvMatrix => game.mvMatrix;
 
 mvPushMatrix() => game.mvPushMatrix();
