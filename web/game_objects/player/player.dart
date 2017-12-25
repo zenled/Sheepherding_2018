@@ -22,12 +22,12 @@ class Player extends GameObject {
   void handleUserInput() {
     // Forward Backward
     bool preserveTiltFB = false;
-    if (keyboardHandler.isPressingFORWARD) {
+    if (inputHandler.isPressingFORWARD) {
       translateZ(-zSpeed);
       droneBody.rotationX = -movingTilt_moving;
       preserveTiltFB = true;
     }
-    if (keyboardHandler.isPressingBACKWARD) {
+    if (inputHandler.isPressingBACKWARD) {
       translateZ(zSpeed);
       droneBody.rotationX = movingTilt_moving;
       preserveTiltFB = true;
@@ -38,12 +38,12 @@ class Player extends GameObject {
 
     // Left Right
     bool preserveTiltLR = false;
-    if (keyboardHandler.isPressingRIGHT) {
+    if (inputHandler.isPressingRIGHT) {
       translateX(xSpeed);
       droneBody.rotationZ = -movingTilt_moving;
       preserveTiltLR = true;
     }
-    if (keyboardHandler.isPressingLEFT) {
+    if (inputHandler.isPressingLEFT) {
       translateX(-xSpeed);
       droneBody.rotationZ = movingTilt_moving;
       preserveTiltLR = true;
@@ -53,18 +53,18 @@ class Player extends GameObject {
     }
 
     // Up Down
-    if (keyboardHandler.isPressingUP) {
+    if (inputHandler.isPressingUP) {
       translateY(ySpeed);
     }
-    if (keyboardHandler.isPressingDOWN) {
+    if (inputHandler.isPressingDOWN) {
       translateY(-ySpeed);
     }
 
     // Rotation
-    if (keyboardHandler.isPressingROTATE_RIGHT) {
+    if (inputHandler.isPressingROTATE_RIGHT) {
       rotateY(-yRotationSpeed);
     }
-    if (keyboardHandler.isPressingROTATE_LEFT) {
+    if (inputHandler.isPressingROTATE_LEFT) {
       rotateY(yRotationSpeed);
     }
   }

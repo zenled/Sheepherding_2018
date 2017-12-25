@@ -1,4 +1,4 @@
-const String vertex_shader_source = '''
+const String source_code = '''
 attribute vec3 aVertexPosition;
 attribute vec4 aVertexColor;
 
@@ -12,3 +12,9 @@ void main(void) {
     vColor = aVertexColor;
 }
 ''';
+
+const String attribute_neme_vertexPosition = "aVertexPosition";
+const String attribute_name_vertexColor = "aVertexColor";
+
+const String uniform_name_mvMatrix = "uMVMatrix";
+const String uniform_name_pMatrix = "uPMatrix";

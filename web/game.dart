@@ -6,7 +6,12 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'dart:math';
 
-import 'keyboard_handler.dart';
+// import shaders
+import 'shaders/fragment_shader.dart' as fragment_shader;
+import 'shaders/vertex_shader.dart' as vertex_shader;
+
+//
+import 'input_handler.dart';
 
 // game objects
 part 'game_objects/game_object.dart';
@@ -19,21 +24,8 @@ part 'game_objects/pyramid.dart';
 // math
 part 'matrix4.dart';
 
-// other
-part 'gl_program.dart';
-
 CanvasElement canvas;
 RenderingContext gl;
-GlProgram program;
-
-Matrix4 pMatrix;
-Matrix4 mvMatrix;
-List<Matrix4> mvStack = new List<Matrix4>();
-
-int attributePointerVertex;
-int attributePointerColor;
-
-KeyboardHandler keyboardHandler;
 
 Game game;
 
@@ -41,65 +33,94 @@ void initGame() {
   canvas = querySelector("#canvas");
   gl = canvas.getContext3d();
 
-  mvMatrix = new Matrix4()..identity();
-
-  // inits input
-  keyboardHandler = new KeyboardHandler(window);
-
   game = new Game();
   game.startGame();
 }
 
-mvPushMatrix() => mvStack.add(new Matrix4.fromMatrix(mvMatrix));
+// Global ------------------------------------------------------------------------------------
+int get _attributePointerVertex => game._attributePointerVertex;
 
-mvPopMatrix() => mvMatrix = mvStack.removeLast();
+int get _attributePointerColor => game._attributePointerColor;
 
-setMatrixUniforms() {
-  gl.uniformMatrix4fv(program.uniforms['uPMatrix'], false, pMatrix.buf);
-  gl.uniformMatrix4fv(program.uniforms['uMVMatrix'], false, mvMatrix.buf);
-}
+Matrix4 get pMatrix => game._pMatrix;
+
+Matrix4 get mvMatrix => game._mvMatrix;
+
+mvPushMatrix() => game.mvPushMatrix();
+
+mvPopMatrix() => game.mvPopMatrix();
+
+setMatrixUniforms() => game.setMatrixUniforms();
+
+InputHandler get inputHandler => game._inputHandler;
 
 //------------------------------------------------------------------------------------------
 
 class Game {
+  Matrix4 _pMatrix;
+  Matrix4 _mvMatrix;
+  List<Matrix4> _mvStack;
+
+  Program _program;
+
+  int _attributePointerVertex;
+  int _attributePointerColor;
+
+  UniformLocation _uniformLocationPMatrix;
+  UniformLocation _uniformLocationMVMatrix;
+
+  InputHandler _inputHandler;
+
   Timer _timer;
 
+  // game objects
   RootObject rootObject;
 
   Game() {
-    program = new GlProgram(
-        '''
-          precision mediump float;
+    // inits Matrix-es
+    _mvMatrix = new Matrix4()..identity();
+    _mvStack = new List<Matrix4>();
 
-          varying vec4 vColor;
+    // inits Fragment Shader
+    Shader fragmentShader = gl.createShader(FRAGMENT_SHADER);
+    gl.shaderSource(fragmentShader, fragment_shader.source_code);
+    gl.compileShader(fragmentShader);
 
-          void main(void) {
-            gl_FragColor = vColor;
-          }
-        ''',
-        '''
-          attribute vec3 aVertexPosition;
-          attribute vec4 aVertexColor;
+    // inits Vertex Shader
+    Shader vertexShader = gl.createShader(VERTEX_SHADER);
+    gl.shaderSource(vertexShader, vertex_shader.source_code);
+    gl.compileShader(vertexShader);
 
-          uniform mat4 uMVMatrix;
-          uniform mat4 uPMatrix;
+    // attaches shaders
+    _program = gl.createProgram();
+    gl.attachShader(_program, vertexShader);
+    gl.attachShader(_program, fragmentShader);
+    gl.linkProgram(_program);
+    gl.useProgram(_program);
 
-          varying vec4 vColor;
+    if (!gl.getProgramParameter(_program, LINK_STATUS)) {
+      window.alert("Could not init shaders.");
+    }
 
-          void main(void) {
-              gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-              vColor = aVertexColor;
-          }
-        ''',
-        ['aVertexPosition', 'aVertexColor'],
-        ['uMVMatrix', 'uPMatrix'],
-        gl);
-    gl.useProgram(program.program);
+    // sets attribute pointers
+    _attributePointerVertex =
+        gl.getAttribLocation(_program, vertex_shader.attribute_neme_vertexPosition);
+    gl.enableVertexAttribArray(_attributePointerVertex);
+
+    _attributePointerColor =
+        gl.getAttribLocation(_program, vertex_shader.attribute_name_vertexColor);
+    gl.enableVertexAttribArray(_attributePointerColor);
+
+    // sets uniform Locations
+    _uniformLocationMVMatrix =
+        gl.getUniformLocation(_program, vertex_shader.uniform_name_mvMatrix);
+    _uniformLocationPMatrix =
+        gl.getUniformLocation(_program, vertex_shader.uniform_name_pMatrix);
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
-    attributePointerVertex = program.attributes['aVertexPosition'];
-    attributePointerColor = program.attributes['aVertexColor'];
+    // inits inputHandler
+    _inputHandler = new InputHandler(window);
 
     //inits root object
     rootObject = new RootObject();
@@ -112,19 +133,32 @@ class Game {
     rootObject.addChild(player);
   }
 
+  void mvPushMatrix() {
+    _mvStack.add(new Matrix4.fromMatrix(_mvMatrix));
+  }
+
+  void mvPopMatrix() {
+    _mvMatrix = _mvStack.removeLast();
+  }
+
+  void setMatrixUniforms() {
+    gl.uniformMatrix4fv(_uniformLocationPMatrix, false, _pMatrix.buf);
+    gl.uniformMatrix4fv(_uniformLocationMVMatrix, false, _mvMatrix.buf);
+  }
+
   void _drawScene() {
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clear(COLOR_BUFFER_BIT | DEPTH_BUFFER_BIT);
     gl.enable(DEPTH_TEST);
     gl.disable(BLEND);
 
-    pMatrix =
+    _pMatrix =
         Matrix4.perspective(45.0, canvas.width / canvas.height, 0.1, 100.0);
 
     rootObject.draw();
   }
 
-  void _handleUserInput(){
+  void _handleUserInput() {
     rootObject.handleUserInputCall();
   }
 

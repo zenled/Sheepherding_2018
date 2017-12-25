@@ -143,7 +143,7 @@ abstract class GameObject {
 
     if (vertexBuffer != null) {
       gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-      gl.vertexAttribPointer(attributePointerVertex, 3, FLOAT, false, 0, 0);
+      gl.vertexAttribPointer(_attributePointerVertex, 3, FLOAT, false, 0, 0);
     }
 
     // if (normal != null) {
@@ -158,7 +158,7 @@ abstract class GameObject {
 
     if (colorBuffer != null) {
       gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      gl.vertexAttribPointer(attributePointerColor, 4, FLOAT, false, 0, 0);
+      gl.vertexAttribPointer(_attributePointerColor, 4, FLOAT, false, 0, 0);
     }
 
     setMatrixUniforms();

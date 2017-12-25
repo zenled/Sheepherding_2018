@@ -11,7 +11,7 @@ const _keyCode_CTRL = 17;
 const _keyCode_Q = 81;
 const _keyCode_E = 69;
 
-class KeyboardHandler {
+class InputHandler {
   final Window window;
 
   bool _keyDown_FORWARD = false;
@@ -30,7 +30,7 @@ class KeyboardHandler {
   double _mouseMove_x = 0.0;
   double _mouseMove_y = 0.0;
 
-  KeyboardHandler(this.window) {
+  InputHandler(this.window) {
     window.onKeyDown.listen(onKeyDown);
     window.onKeyUp.listen(onKeyUp);
 
