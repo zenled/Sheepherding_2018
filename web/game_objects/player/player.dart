@@ -3,10 +3,16 @@ library Player;
 import '../game_object.dart';
 import '../pyramid.dart';
 
-class Player extends GameObject {
+import '../sheep/i_sheep_herder.dart';
+
+class Player extends GameObject implements ISheepHerder {
   static const xSpeed = 0.04;
   static const ySpeed = 0.04;
   static const zSpeed = 0.04;
+
+  static const initialPositionX = 0.0;
+  static const initialPositionY = 5.0;
+  static const initialPositionZ = 0.0;
 
   static const yRotationSpeed = 2.0;
 
@@ -17,6 +23,11 @@ class Player extends GameObject {
   GameObject droneBody;
 
   Player() {
+    // sets inital position
+    translateX(initialPositionX);
+    translateY(initialPositionY);
+    translateZ(initialPositionZ);
+
     droneBody = new Pyramid();
     addChild(droneBody);
   }
@@ -71,4 +82,10 @@ class Player extends GameObject {
       rotateY(yRotationSpeed);
     }
   }
+
+  // ISheepHerder --------------------------------------------------------------------
+  
+  // TODO: implement rotation
+  @override
+  double get rotation => rotationY;
 }

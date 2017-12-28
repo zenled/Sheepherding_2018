@@ -2,8 +2,8 @@ import 'dart:web_gl';
 import 'dart:typed_data';
 
 import '../global.dart' as global;
-import '../input_handler.dart';
 import '../matrix4.dart';
+import '../math_util.dart' as math_util;
 
 export 'game_object.dart';
 export '../global.dart';
@@ -176,4 +176,8 @@ abstract class GameObject {
 
     global.mvPopMatrix();
   }
+
+  math_util.Point3D get point3D => new math_util.Point3D(x, y, z);
+
+  math_util.Point2D get point2D_birdView => new math_util.Point2D(x, -z);
 }

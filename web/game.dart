@@ -11,11 +11,15 @@ import 'global.dart';
 import 'matrix4.dart';
 import 'input_handler.dart';
 
+// Game Objects
 import 'game_objects/root_object.dart';
 import 'game_objects/player/player.dart';
 import 'game_objects/main_camera.dart';
 import 'game_objects/pyramid.dart';
 import 'game_objects/world/world.dart';
+
+// Controllers
+import 'controllers/herd_controller.dart';
 
 class Game {
   Matrix4 _pMatrix;
@@ -38,6 +42,9 @@ class Game {
   RootObject rootObject;
   MainCamera mainCamera;
   Player player;
+
+  // Controllers
+  HerdController herdController;
 
   Game() {
     // inits Matrix-es
@@ -85,30 +92,23 @@ class Game {
     // inits inputHandler
     _inputHandler = new InputHandler(window);
 
-    //inits root object
+    // inits Game Objects ----------------------------------------------------------------------
+    // rootObject
     rootObject = new RootObject();
 
-    // Player pyramid = new Player();
-    // pyramid.translateZ(-10.0);
-    player = new Player();
-    player.translateY(5.0);
-
-    mainCamera = new MainCamera(player);
-
-    Pyramid pyramid = new Pyramid();
-    pyramid.translateZ(-20.0);
-    pyramid.translateX(5.0);
-    rootObject.addChild(pyramid);
-
-    Pyramid pyramid1 = new Pyramid();
-    pyramid1.translateZ(-20.0);
-    pyramid1.translateX(-5.0);
-    rootObject.addChild(pyramid1);
-
+    // world (scenery)
     World world = new World();
     rootObject.addChild(world);
 
+    // player
+    player = new Player();
     rootObject.addChild(player);
+
+    // mainCamera
+    mainCamera = new MainCamera(player);
+
+    // inits Controllers ----------------------------------------------------------------------
+    herdController = new HerdController(rootObject, player);
   }
 
   void mvPushMatrix() {
@@ -140,6 +140,10 @@ class Game {
     rootObject.handleUserInputCall();
   }
 
+  void _handleControllers(){
+    herdController.moveHerdMembers();
+  }
+
   void startGame() {
     window.animationFrame.then(_tick);
     // _timer = new Timer.periodic(
@@ -154,6 +158,7 @@ class Game {
   void _tick(_) {
     window.animationFrame.then(_tick);
     _handleUserInput();
+    _handleControllers();
     _drawScene();
   }
 

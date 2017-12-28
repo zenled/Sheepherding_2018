@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'global.dart' as global;
 import 'game.dart';
+import 'math_util.dart';
 
 void main() {
   global.canvas = querySelector("#canvas");
@@ -9,9 +10,4 @@ void main() {
 
   global.game = new Game();
   global.game.startGame();
-
-  // querySelector("body").addEventListener("keydown", (Event event){
-  //   if ()
-  //   event.preventDefault();
-  // });
 }
