@@ -8,6 +8,8 @@ const _keyCode_W = 87;
 const _keyCode_Q = 81;
 const _keyCode_E = 69;
 
+const _keyCode_SPACE = 32;
+
 const _keyCode_UP = 38;
 const _keyCode_DOWN = 40;
 const _keyCode_LEFT = 37;
@@ -36,7 +38,6 @@ class InputHandler {
   bool _keyDown_CAMERA_RIGHT = false;
 
   InputHandler(this.window) {
-
     window.onKeyDown.listen(onKeyDown);
     window.onKeyUp.listen(onKeyUp);
   }
@@ -56,10 +57,13 @@ class InputHandler {
         _keyDown_FORWARD = true;
         break;
       case _keyCode_SHIFT:
-        _keyDown_UP = true;
-        break;
-      case _keyCode_CTRL:
         _keyDown_DOWN = true;
+        break;
+      // case _keyCode_CTRL:
+      //   _keyDown_DOWN = true;
+      //   break;
+      case _keyCode_SPACE:
+        _keyDown_UP = true;
         break;
       case _keyCode_Q:
         _keyDown_ROTATE_LEFT = true;
@@ -81,7 +85,7 @@ class InputHandler {
         break;
     }
 
-    if (keyboardEvent.keyCode != 116){
+    if (keyboardEvent.keyCode != 116) {
       keyboardEvent.preventDefault();
     }
   }
@@ -101,10 +105,13 @@ class InputHandler {
         _keyDown_FORWARD = false;
         break;
       case _keyCode_SHIFT:
-        _keyDown_UP = false;
-        break;
-      case _keyCode_CTRL:
         _keyDown_DOWN = false;
+        break;
+      // case _keyCode_CTRL:
+      //   _keyDown_DOWN = false;
+      //   break;
+      case _keyCode_SPACE:
+        _keyDown_UP = false;
         break;
       case _keyCode_Q:
         _keyDown_ROTATE_LEFT = false;

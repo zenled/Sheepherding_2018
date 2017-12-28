@@ -15,6 +15,7 @@ import 'game_objects/root_object.dart';
 import 'game_objects/player/player.dart';
 import 'game_objects/main_camera.dart';
 import 'game_objects/pyramid.dart';
+import 'game_objects/world/world.dart';
 
 class Game {
   Matrix4 _pMatrix;
@@ -90,7 +91,7 @@ class Game {
     // Player pyramid = new Player();
     // pyramid.translateZ(-10.0);
     player = new Player();
-    player.z = -10.0;
+    player.translateY(5.0);
 
     mainCamera = new MainCamera(player);
 
@@ -103,6 +104,9 @@ class Game {
     pyramid1.translateZ(-20.0);
     pyramid1.translateX(-5.0);
     rootObject.addChild(pyramid1);
+
+    World world = new World();
+    rootObject.addChild(world);
 
     rootObject.addChild(player);
   }
