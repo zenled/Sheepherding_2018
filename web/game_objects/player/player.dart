@@ -63,11 +63,11 @@ class Player extends GameObject {
       translateY(-ySpeed);
     }
 
-    // Rotation
-    if (inputHandler.isPressingROTATE_RIGHT) {
+    // Rotation (roatating the camera left-right also moves the player)
+    if (inputHandler.isPressingROTATE_RIGHT || inputHandler.isPressingCAMERA_RIGHT) {
       rotateY(-yRotationSpeed);
     }
-    if (inputHandler.isPressingROTATE_LEFT) {
+    if (inputHandler.isPressingROTATE_LEFT || inputHandler.isPressingCAMERA_LEFT) {
       rotateY(yRotationSpeed);
     }
   }

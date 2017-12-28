@@ -132,6 +132,7 @@ class Game {
   }
 
   void _handleUserInput() {
+    mainCamera.handleUserInput();
     rootObject.handleUserInputCall();
   }
 

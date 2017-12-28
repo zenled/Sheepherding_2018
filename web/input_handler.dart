@@ -5,11 +5,16 @@ const _keyCode_S = 83;
 const _keyCode_D = 68;
 const _keyCode_W = 87;
 
-const _keyCode_SHIFT = 16;
-const _keyCode_CTRL = 17;
-
 const _keyCode_Q = 81;
 const _keyCode_E = 69;
+
+const _keyCode_UP = 38;
+const _keyCode_DOWN = 40;
+const _keyCode_LEFT = 37;
+const _keyCode_RIGHT = 39;
+
+const _keyCode_SHIFT = 16;
+const _keyCode_CTRL = 17;
 
 class InputHandler {
   final Window window;
@@ -25,16 +30,15 @@ class InputHandler {
   bool _keyDown_ROTATE_LEFT = false;
   bool _keyDown_ROTATE_RIGHT = false;
 
-  double _lastMouse_x = 0.0;
-  double _lastMouse_y = 0.0;
-  double _mouseMove_x = 0.0;
-  double _mouseMove_y = 0.0;
+  bool _keyDown_CAMERA_UP = false;
+  bool _keyDown_CAMERA_DOWN = false;
+  bool _keyDown_CAMERA_LEFT = false;
+  bool _keyDown_CAMERA_RIGHT = false;
 
   InputHandler(this.window) {
+
     window.onKeyDown.listen(onKeyDown);
     window.onKeyUp.listen(onKeyUp);
-
-    window.onMouseMove.listen(onMouseMove);
   }
 
   void onKeyDown(KeyboardEvent keyboardEvent) {
@@ -63,6 +67,22 @@ class InputHandler {
       case _keyCode_E:
         _keyDown_ROTATE_RIGHT = true;
         break;
+      case _keyCode_UP:
+        _keyDown_CAMERA_UP = true;
+        break;
+      case _keyCode_DOWN:
+        _keyDown_CAMERA_DOWN = true;
+        break;
+      case _keyCode_LEFT:
+        _keyDown_CAMERA_LEFT = true;
+        break;
+      case _keyCode_RIGHT:
+        _keyDown_CAMERA_RIGHT = true;
+        break;
+    }
+
+    if (keyboardEvent.keyCode != 116){
+      keyboardEvent.preventDefault();
     }
   }
 
@@ -92,18 +112,19 @@ class InputHandler {
       case _keyCode_E:
         _keyDown_ROTATE_RIGHT = false;
         break;
+      case _keyCode_UP:
+        _keyDown_CAMERA_UP = false;
+        break;
+      case _keyCode_DOWN:
+        _keyDown_CAMERA_DOWN = false;
+        break;
+      case _keyCode_LEFT:
+        _keyDown_CAMERA_LEFT = false;
+        break;
+      case _keyCode_RIGHT:
+        _keyDown_CAMERA_RIGHT = false;
+        break;
     }
-  }
-
-  void onMouseMove(MouseEvent mouseEvent) {
-    double newMouse_x = mouseEvent.layer.x;
-    double newMouse_y = mouseEvent.layer.y;
-
-    _mouseMove_x = newMouse_x - _lastMouse_x;
-    _mouseMove_y = newMouse_y - _lastMouse_y;
-
-    _lastMouse_x = newMouse_x;
-    _lastMouse_y = newMouse_y;
   }
 
   bool get isPressingFORWARD => _keyDown_FORWARD;
@@ -117,19 +138,8 @@ class InputHandler {
   bool get isPressingROTATE_LEFT => _keyDown_ROTATE_LEFT;
   bool get isPressingROTATE_RIGHT => _keyDown_ROTATE_RIGHT;
 
-  double getMouseMoveX({bool resetMove = true}) {
-    double r = _mouseMove_x;
-    if (resetMove) {
-      _mouseMove_x = 0.0;
-    }
-    return r;
-  }
-
-  double getMouseMoveY({bool resetMove = true}) {
-    double r = _mouseMove_y;
-    if (resetMove) {
-      _mouseMove_y = 0.0;
-    }
-    return r;
-  }
+  bool get isPressingCAMERA_UP => _keyDown_CAMERA_UP;
+  bool get isPressingCAMERA_DOWN => _keyDown_CAMERA_DOWN;
+  bool get isPressingCAMERA_LEFT => _keyDown_CAMERA_LEFT;
+  bool get isPressingCAMERA_RIGHT => _keyDown_CAMERA_RIGHT;
 }

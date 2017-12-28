@@ -11,7 +11,10 @@ class MainCamera {
   static const offsetY = -2.0;
   static const offsetZ = -10.0;
 
-  static const double _initial_rotationX = 20.0;
+  static const _initial_rotationX = 20.0;
+  static const _rotation_speed = 1.0;
+  static const _minRotationX = -40.0;
+  static const _maxRotationX = 80.0;
 
   double rotationX;
 
@@ -38,5 +41,23 @@ class MainCamera {
     m4.translate([-following.x, -following.y, -following.z]);
 
     pMatrix *= m4;
+  }
+
+  void handleUserInput() {
+    if (inputHandler.isPressingCAMERA_UP ||
+        inputHandler.isPressingCAMERA_DOWN) {
+      if (inputHandler.isPressingCAMERA_UP) {
+        rotationX += _rotation_speed;
+      }
+      if (inputHandler.isPressingCAMERA_DOWN) {
+        rotationX -= _rotation_speed;
+      }
+      if (rotationX < _minRotationX){
+        rotationX = _minRotationX;
+      }
+      if (rotationX > _maxRotationX){
+        rotationX = _maxRotationX;
+      }
+    }
   }
 }
