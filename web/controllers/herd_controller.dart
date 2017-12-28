@@ -32,6 +32,8 @@ class HerdController {
     for (int i = 0; i < _creator_num_of_sheep; i++){
       Sheep sheep = new Sheep(sheepHerder);
       // sets inital position
+      sheep.y = 1.2;
+
       double z = _creator_sheep0_z;
       z += row * _creator_distance;
       sheep.z = z;
