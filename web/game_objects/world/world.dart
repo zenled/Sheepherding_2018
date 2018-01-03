@@ -31,16 +31,28 @@ class World extends GameObject {
     ];
     setVertexBuffer(vertices);
 
-    List<double> colors = <double>[
-      // t0
-      color_normalR, color_normalG, color_normalB, 1.0,
-      color_normalR, color_normalG, color_normalB, 1.0,
-      color_normalR, color_normalG, color_normalB, 1.0,
-      // t1
-      color_normalR, color_normalG, color_normalB, 1.0,
-      color_normalR, color_normalG, color_normalB, 1.0,
-      color_normalR, color_normalG, color_normalB, 1.0,
+    // List<double> colors = <double>[
+    //   // t0
+    //   color_normalR, color_normalG, color_normalB, 1.0,
+    //   color_normalR, color_normalG, color_normalB, 1.0,
+    //   color_normalR, color_normalG, color_normalB, 1.0,
+    //   // t1
+    //   color_normalR, color_normalG, color_normalB, 1.0,
+    //   color_normalR, color_normalG, color_normalB, 1.0,
+    //   color_normalR, color_normalG, color_normalB, 1.0,
+    // ];
+    // setColorBuffer(colors);
+
+    List<double> textureCoord = <double>[
+    0.0,  0.0,
+    1.0,  0.0,
+    1.0,  1.0,
+    0.0,  1.0,
+        0.0,  0.0,
+    1.0,  0.0,
+    1.0,  1.0,
+    0.0,  1.0,
     ];
-    setColorBuffer(colors);
+    setTexture("grass.jpg", textureCoord);
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:html';
 import 'dart:web_gl';
 
@@ -16,6 +17,10 @@ int get attributePointerVertex => game.attributePointerVertex;
 
 int get attributePointerColor => game.attributePointerColor;
 
+int get attributePointerTextureCoord => game.attributePointerTextureCoord;
+
+UniformLocation get uSampler => game.uniformLocationSampler;
+
 Matrix4 get pMatrix => game.pMatrix;
 
 void set pMatrix(Matrix4 value) => game.pMatrix = value;
@@ -29,3 +34,15 @@ mvPopMatrix() => game.mvPopMatrix();
 setMatrixUniforms() => game.setMatrixUniforms();
 
 InputHandler get inputHandler => game.inputHandler;
+
+Future<Texture> loadTexture(String url, handle(Texture tex, ImageElement ele)) {
+  var completer = new Completer<Texture>();
+  var texture = gl.createTexture();
+  var element = new ImageElement();
+  element.onLoad.listen((e) {
+    handle(texture, element);
+    completer.complete(texture);
+  });
+  element.src = url;
+  return completer.future;
+}

@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:web_gl';
 import 'dart:typed_data';
 
@@ -29,6 +30,9 @@ abstract class GameObject {
   double scaleX;
   double scaleY;
   double scaleZ;
+
+  String _textureSource;
+  Texture texture;
 
   GameObject parent;
   Set<GameObject> _children = new Set<GameObject>();
@@ -136,6 +140,37 @@ abstract class GameObject {
     );
   }
 
+  /// Sets texture
+  ///
+  /// example: setTexture("crate.gif")
+  void setTexture(String textureUrl, List<double> textureCoordinates) {
+    textureUrl = "textures/$textureUrl";
+    _textureSource = textureUrl;
+
+    global.loadTexture(textureUrl, (Texture texture, ImageElement element) {
+      global.gl.bindTexture(TEXTURE_2D, texture);
+      global.gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
+      global.gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, element);
+      // global.gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
+      // global.gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
+
+      global.gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
+      global.gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
+      global.gl.generateMipmap(TEXTURE_2D);
+
+      global.gl.bindTexture(TEXTURE_2D, null);
+      this.texture = texture;
+    }).then((_) {
+      textureCoordBuffer = global.gl.createBuffer();
+      global.gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
+      global.gl.bufferData(
+        ARRAY_BUFFER,
+        new Float32List.fromList(textureCoordinates),
+        STATIC_DRAW,
+      );
+    });
+  }
+
   void handleUserInput() {}
 
   void handleUserInputCall() {
@@ -162,6 +197,10 @@ abstract class GameObject {
     global.mvMatrix.m11 *= scaleY;
     global.mvMatrix.m22 *= scaleZ;
 
+    // texture
+    global.gl.activeTexture(TEXTURE0);
+    global.gl.bindTexture(TEXTURE_2D, texture);
+    global.gl.uniform1i(global.uSampler, 0);
 
     for (GameObject child in children) {
       child.draw();
@@ -169,7 +208,8 @@ abstract class GameObject {
 
     if (vertexBuffer != null) {
       global.gl.bindBuffer(ARRAY_BUFFER, vertexBuffer);
-      global.gl.vertexAttribPointer(global.attributePointerVertex, 3, FLOAT, false, 0, 0);
+      global.gl.vertexAttribPointer(
+          global.attributePointerVertex, 3, FLOAT, false, 0, 0);
     }
 
     // if (normal != null) {
@@ -177,14 +217,16 @@ abstract class GameObject {
     //   gl.vertexAttribPointer(normal, 3, FLOAT, false, 0, 0);
     // }
 
-    // if (coord != null) {
-    //   gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
-    //   gl.vertexAttribPointer(coord, 2, FLOAT, false, 0, 0);
-    // }
+    if (textureCoordBuffer != null) {
+      global.gl.bindBuffer(ARRAY_BUFFER, textureCoordBuffer);
+      global.gl.vertexAttribPointer(
+          global.attributePointerTextureCoord, 2, FLOAT, false, 0, 0);
+    }
 
     if (colorBuffer != null) {
       global.gl.bindBuffer(ARRAY_BUFFER, colorBuffer);
-      global.gl.vertexAttribPointer(global.attributePointerColor, 4, FLOAT, false, 0, 0);
+      global.gl.vertexAttribPointer(
+          global.attributePointerColor, 4, FLOAT, false, 0, 0);
     }
 
     global.setMatrixUniforms();
