@@ -10,6 +10,7 @@ import 'shaders/vertex_shader.dart' as vertex_shader;
 import 'global.dart';
 import 'matrix4.dart';
 import 'input_handler.dart';
+import 'math_util.dart' as math_util;
 
 // Game Objects
 import 'game_objects/root_object.dart';
@@ -17,9 +18,11 @@ import 'game_objects/player/player.dart';
 import 'game_objects/main_camera.dart';
 import 'game_objects/pyramid.dart';
 import 'game_objects/world/world.dart';
+import 'game_objects/world/lake.dart';
 
 // Controllers
 import 'controllers/herd_controller.dart';
+import 'controllers/lake_controller.dart';
 
 class Game {
   Matrix4 _pMatrix;
@@ -47,6 +50,7 @@ class Game {
 
   // Controllers
   HerdController herdController;
+  LakeController lakeController;
 
   Game() {
     // inits Matrix-es
@@ -117,6 +121,7 @@ class Game {
 
     // inits Controllers ----------------------------------------------------------------------
     herdController = new HerdController(rootObject, player);
+    lakeController = new LakeController(rootObject);
   }
 
   void mvPushMatrix() {
@@ -141,6 +146,15 @@ class Game {
     mainCamera.updatePMatrix();
 
     rootObject.draw();
+
+    // Lake lake = lakeController.lakes.first;
+    // for (math_util.Triangle triangle in lake.getCollisionDetectionTriangles()) {
+    //   bool collision = math_util.isPointInTriangle(
+    //       new math_util.Point2D(player.x, player.z), triangle);
+    //   if (collision){
+    //     print("Collision");
+    //   }
+    // }
   }
 
   void _handleUserInput() {
