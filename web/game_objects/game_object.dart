@@ -151,8 +151,13 @@ abstract class GameObject {
       global.gl.bindTexture(TEXTURE_2D, texture);
       global.gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
       global.gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, element);
-      global.gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
-      global.gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
+      // global.gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
+      // global.gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
+
+      global.gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
+      global.gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
+      global.gl.generateMipmap(TEXTURE_2D);
+
       global.gl.bindTexture(TEXTURE_2D, null);
       this.texture = texture;
     }).then((_) {
