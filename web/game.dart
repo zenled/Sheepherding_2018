@@ -30,9 +30,11 @@ class Game {
 
   int _attributePointerVertex;
   int _attributePointerColor;
+  int _attributePointerTextureCoord;
 
   UniformLocation _uniformLocationPMatrix;
   UniformLocation _uniformLocationMVMatrix;
+  UniformLocation _uniformLocationSampler;
 
   InputHandler _inputHandler;
 
@@ -81,11 +83,17 @@ class Game {
         _program, vertex_shader.attribute_name_vertexColor);
     gl.enableVertexAttribArray(_attributePointerColor);
 
+    _attributePointerTextureCoord = gl.getAttribLocation(
+        _program, vertex_shader.attribute_name_textureCoord);
+    gl.enableVertexAttribArray(_attributePointerTextureCoord);
+
     // sets uniform Locations
     _uniformLocationMVMatrix =
         gl.getUniformLocation(_program, vertex_shader.uniform_name_mvMatrix);
     _uniformLocationPMatrix =
         gl.getUniformLocation(_program, vertex_shader.uniform_name_pMatrix);
+    _uniformLocationSampler =
+        gl.getUniformLocation(_program, vertex_shader.uniform_name_sampler);
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
@@ -140,7 +148,7 @@ class Game {
     rootObject.handleUserInputCall();
   }
 
-  void _handleControllers(){
+  void _handleControllers() {
     herdController.moveHerdMembers();
   }
 
@@ -165,6 +173,10 @@ class Game {
   int get attributePointerVertex => _attributePointerVertex;
 
   int get attributePointerColor => _attributePointerColor;
+
+  int get attributePointerTextureCoord => _attributePointerTextureCoord;
+
+  UniformLocation get uniformLocationSampler => _uniformLocationSampler;
 
   Matrix4 get pMatrix => _pMatrix;
 
