@@ -26,6 +26,10 @@ abstract class GameObject {
   double rotationY;
   double rotationZ;
 
+  double scaleX;
+  double scaleY;
+  double scaleZ;
+
   GameObject parent;
   Set<GameObject> _children = new Set<GameObject>();
 
@@ -37,6 +41,10 @@ abstract class GameObject {
     rotationX = 0.0;
     rotationY = 0.0;
     rotationZ = 0.0;
+
+    scaleX = 1.0;
+    scaleY = 1.0;
+    scaleZ = 1.0;
   }
 
   void translateX(double value) {
@@ -141,11 +149,19 @@ abstract class GameObject {
   void draw() {
     global.mvPushMatrix();
 
+    // translate
     global.mvMatrix.translate(<double>[x, y, z]);
 
+    // rotate
     global.mvMatrix.rotateX(radians(rotationX));
     global.mvMatrix.rotateY(radians(rotationY));
     global.mvMatrix.rotateZ(radians(rotationZ));
+
+    // scale
+    global.mvMatrix.m00 *= scaleX;
+    global.mvMatrix.m11 *= scaleY;
+    global.mvMatrix.m22 *= scaleZ;
+
 
     for (GameObject child in children) {
       child.draw();
