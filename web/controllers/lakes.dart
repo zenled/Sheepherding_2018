@@ -48,6 +48,13 @@ List<List<num>> lakes_verteces = <List<num>>[
     -_outerBorderSize, 0.0, _outerBorderSize,
     _outerBorderSize, 0.0, w,
   ],
+  // Lake 0
+  <num>[
+    // t0
+    -w, 0, -w,
+    -25, 0, -w,
+    -w, 0, 25,
+  ],
 ];
 
 List<List<num>> lakes_textureCoords = <List<num>>[
@@ -90,7 +97,7 @@ List<List<num>> lakes_textureCoords = <List<num>>[
     1.0, 1.0,
     0.0, 1.0,
   ],
-    // Outer border bottom
+  // Outer border bottom
   <num>[
     // t0
     0.0, 0.0,
@@ -98,6 +105,14 @@ List<List<num>> lakes_textureCoords = <List<num>>[
     1.0, 1.0,
     0.0, 1.0,
     // t1
+    0.0, 0.0,
+    1.0, 0.0,
+    1.0, 1.0,
+    0.0, 1.0,
+  ],
+  // Lake 0
+    <num>[
+    // t0
     0.0, 0.0,
     1.0, 0.0,
     1.0, 1.0,

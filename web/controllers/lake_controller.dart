@@ -11,7 +11,7 @@ class LakeController {
   GameObject rootObject;
 
   LakeController(this.rootObject) {
-    _createLakes();
+    //_createLakes();
   }
 
   void _createLakes() {

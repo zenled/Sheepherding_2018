@@ -23,6 +23,8 @@ import 'game_objects/world/lake.dart';
 // Controllers
 import 'controllers/herd_controller.dart';
 import 'controllers/lake_controller.dart';
+import 'controllers/grass_controller.dart';
+import 'controllers/dirt_controller.dart';
 
 class Game {
   Matrix4 _pMatrix;
@@ -51,6 +53,8 @@ class Game {
   // Controllers
   HerdController herdController;
   LakeController lakeController;
+  GrassController grassConroller;
+  DirtController dirtController;
 
   Game() {
     // inits Matrix-es
@@ -122,6 +126,8 @@ class Game {
     // inits Controllers ----------------------------------------------------------------------
     herdController = new HerdController(rootObject, player);
     lakeController = new LakeController(rootObject);
+    grassConroller = new GrassController(rootObject);
+    dirtController = new DirtController(rootObject);
   }
 
   void mvPushMatrix() {
