@@ -53,6 +53,6 @@ class World extends GameObject {
     1.0,  1.0,
     0.0,  1.0,
     ];
-    setTexture("grass.jpg", textureCoord);
+    setTexture("water.jpg", textureCoord);
   }
 }
