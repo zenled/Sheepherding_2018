@@ -31,7 +31,6 @@ abstract class GameObject {
   double scaleY;
   double scaleZ;
 
-  String _textureSource;
   Texture texture;
 
   GameObject parent;
@@ -143,17 +142,13 @@ abstract class GameObject {
   /// Sets texture
   ///
   /// example: setTexture("crate.gif")
-  void setTexture(String textureUrl, List<double> textureCoordinates) {
-    textureUrl = "textures/$textureUrl";
-    _textureSource = textureUrl;
+  void setTexture(String textureName, List<double> textureCoordinates) {
+    String textureSource = "textures/$textureName";
 
-    global.loadTexture(textureUrl, (Texture texture, ImageElement element) {
+    global.loadTexture(textureSource, (Texture texture, ImageElement element) {
       global.gl.bindTexture(TEXTURE_2D, texture);
       global.gl.pixelStorei(UNPACK_FLIP_Y_WEBGL, 1);
       global.gl.texImage2D(TEXTURE_2D, 0, RGBA, RGBA, UNSIGNED_BYTE, element);
-      // global.gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, NEAREST);
-      // global.gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, NEAREST);
-
       global.gl.texParameteri(TEXTURE_2D, TEXTURE_MAG_FILTER, LINEAR);
       global.gl.texParameteri(TEXTURE_2D, TEXTURE_MIN_FILTER, LINEAR_MIPMAP_NEAREST);
       global.gl.generateMipmap(TEXTURE_2D);
