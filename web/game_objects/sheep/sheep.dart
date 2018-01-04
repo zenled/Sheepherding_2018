@@ -16,7 +16,7 @@ part 'sheep_body.dart';
 enum SheepState {
   eating,
   moving,
-  drowned,
+  drowning,
   dead,
 }
 
@@ -32,6 +32,8 @@ class Sheep extends GameObject {
   static const moveFreely_chanceOfStayingInPlace = 0.8;
   static const moveFreely_maxRotation = 10.0;
   static const moveFreely_maxMovementSpeed = 0.04;
+
+  static const drowning_speed = 0.02;
 
   static const hungerLevelChange = 1.0;
 
@@ -99,7 +101,15 @@ class Sheep extends GameObject {
     // TODO
     //return;
 
-    if (state == SheepState.drowned || state == SheepState.dead) {
+    if (state == SheepState.drowning) {
+      translateY(-drowning_speed);
+      if (y < -1.0){
+        state = SheepState.dead;
+        return;
+      }
+    }
+
+    if (state == SheepState.dead){
       return;
     }
 
@@ -161,7 +171,7 @@ class Sheep extends GameObject {
 
   void _updateState() {
     // once a sheep is drowned it is drowned forever
-    if (state == SheepState.drowned) {
+    if (state == SheepState.drowning) {
       return;
     }
 
@@ -195,12 +205,12 @@ class Sheep extends GameObject {
       }
     }
 
-    state = SheepState.drowned;
+    state = SheepState.drowning;
   }
 
   void _updateHungerLevel() {
     switch (state) {
-      case SheepState.drowned:
+      case SheepState.drowning:
         break;
       case SheepState.dead:
         break;
@@ -218,7 +228,7 @@ class Sheep extends GameObject {
   }
 
   void _updateHungerIndicator() {
-    if (state == SheepState.dead || state == SheepState.drowned) {
+    if (state == SheepState.dead || state == SheepState.drowning) {
       hungerIndicator.innerHtml = "____";
     } else {
       hungerIndicator.innerHtml = "$hungerLevel%";
@@ -234,7 +244,7 @@ class Sheep extends GameObject {
       case SheepState.eating:
         stateString = "Eating";
         break;
-      case SheepState.drowned:
+      case SheepState.drowning:
         stateString = "Drowned";
         break;
       case SheepState.dead:

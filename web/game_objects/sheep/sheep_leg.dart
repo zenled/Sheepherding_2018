@@ -90,6 +90,6 @@ class SheepLeg extends GameObject {
       return n as double;
     }).toList();
 
-    setTexture("red.jpg", textureDouble);
+    setTexture("sheep_leg.gif", textureDouble);
   }
 }

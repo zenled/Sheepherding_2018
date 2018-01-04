@@ -67,6 +67,6 @@ class SheepBody extends GameObject {
       1.0, 1.0,
       0.0, 1.0
     ];
-    setTexture("crate.gif", textureCoord);
+    setTexture("sheep_wool.gif", textureCoord);
   }
 }

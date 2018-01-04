@@ -65,6 +65,6 @@ class SheepHead extends GameObject {
       1.0, 1.0,
       0.0, 1.0
     ];
-    setTexture("galvanizedTexture.jpg", textureCoord);
+    setTexture("sheep_head.gif", textureCoord);
   }
 }
