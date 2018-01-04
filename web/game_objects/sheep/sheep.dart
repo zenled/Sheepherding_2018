@@ -170,7 +170,9 @@ class Sheep extends GameObject {
         break;
     }
 
-    hungerLevel %= 100.0;
+    if (hungerLevel > 100.0){
+      hungerLevel = 100.0;
+    }
   }
 
   void _updateHungerIndicator() {

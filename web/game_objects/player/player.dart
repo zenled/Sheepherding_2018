@@ -5,6 +5,9 @@ import '../pyramid.dart';
 
 import '../sheep/i_sheep_herder.dart';
 
+import 'drone_body.dart';
+import 'drone_wing.dart';
+
 class Player extends GameObject implements ISheepHerder {
   static const xSpeed = 0.04;
   static const ySpeed = 0.04;
@@ -28,8 +31,30 @@ class Player extends GameObject implements ISheepHerder {
     translateY(initialPositionY);
     translateZ(initialPositionZ);
 
-    droneBody = new Pyramid();
+    //droneBody = new Pyramid();
+    droneBody = new DroneBody();
     addChild(droneBody);
+
+    // wings
+    GameObject wingTL = new DroneWing();
+    wingTL.x = -0.2;
+    wingTL.z = -0.2;
+    droneBody.addChild(wingTL);
+
+    GameObject wingTR = new DroneWing();
+    wingTR.x = 0.2;
+    wingTR.z = -0.2;
+    droneBody.addChild(wingTR);
+
+    GameObject wingBL = new DroneWing();
+    wingBL.x = -0.2;
+    wingBL.z = 0.2;
+    droneBody.addChild(wingBL);
+
+    GameObject wingBR = new DroneWing();
+    wingBR.x = 0.2;
+    wingBR.z = 0.2;
+    droneBody.addChild(wingBR);
   }
 
   @override
@@ -75,16 +100,18 @@ class Player extends GameObject implements ISheepHerder {
     }
 
     // Rotation (roatating the camera left-right also moves the player)
-    if (inputHandler.isPressingROTATE_RIGHT || inputHandler.isPressingCAMERA_RIGHT) {
+    if (inputHandler.isPressingROTATE_RIGHT ||
+        inputHandler.isPressingCAMERA_RIGHT) {
       rotateY(-yRotationSpeed);
     }
-    if (inputHandler.isPressingROTATE_LEFT || inputHandler.isPressingCAMERA_LEFT) {
+    if (inputHandler.isPressingROTATE_LEFT ||
+        inputHandler.isPressingCAMERA_LEFT) {
       rotateY(yRotationSpeed);
     }
   }
 
   // ISheepHerder --------------------------------------------------------------------
-  
+
   // TODO: implement rotation
   @override
   double get rotation => rotationY;
