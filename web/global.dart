@@ -5,6 +5,8 @@ import 'dart:web_gl';
 import 'game.dart';
 import 'matrix4.dart';
 import 'input_handler.dart';
+import 'controllers/dirt_controller.dart';
+import 'controllers/grass_controller.dart';
 
 /// All global variables and methods should be in here
 
@@ -12,6 +14,10 @@ CanvasElement canvas;
 RenderingContext gl;
 
 Game game;
+
+DirtController get dirtController => game.dirtController;
+
+GrassController get grassController => game.grassConroller;
 
 int get attributePointerVertex => game.attributePointerVertex;
 

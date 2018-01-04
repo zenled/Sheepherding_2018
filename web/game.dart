@@ -44,6 +44,7 @@ class Game {
   InputHandler _inputHandler;
 
   Timer _timer;
+  Timer _sheepTimer;
 
   // game objects
   RootObject rootObject;
@@ -174,13 +175,8 @@ class Game {
 
   void startGame() {
     window.animationFrame.then(_tick);
-    // _timer = new Timer.periodic(
-    //   new Duration(milliseconds: 15),
-    //   (_) {
-    //     _handleUserInput();
-    //     _drawScene();
-    //   },
-    // );
+
+    _sheepTimer = new Timer.periodic(new Duration(seconds: 1), _sheepTimerTick);
   }
 
   void _tick(_) {
@@ -188,6 +184,10 @@ class Game {
     _handleUserInput();
     _handleControllers();
     _drawScene();
+  }
+
+  void _sheepTimerTick(_) {
+    herdController.updateHerdMembersState();
   }
 
   int get attributePointerVertex => _attributePointerVertex;
