@@ -1,8 +1,9 @@
+import 'dart:html';
+
 import '../game_objects/game_object.dart';
 import '../game_objects/world/grass.dart';
 
 import 'grasses.dart';
-
 
 class GrassController {
   static const grassY = 0.03;
@@ -13,6 +14,12 @@ class GrassController {
 
   GrassController(this.rootObject) {
     _createGrassPaches();
+  }
+
+  void updateGrassPachesState(){
+    for (Grass grass in grassPaches){
+      grass.updateState();
+    }
   }
 
   void _createGrassPaches() {
@@ -27,7 +34,11 @@ class GrassController {
       }).toList();
 
       // creates a new lake
-      Grass grass = new Grass(verteces, textureCoords);
+      Grass grass = new Grass(
+        verteces,
+        textureCoords,
+        querySelector("#grassPatchState$i") as TableCellElement,
+      );
       grass.y = grassY;
       grassPaches.add(grass);
 

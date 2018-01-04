@@ -11,6 +11,7 @@ import '../world/i_surface.dart';
 import 'i_sheep_herder.dart';
 import 'sheep_leg.dart';
 import 'sheep_head.dart';
+import '../world/grass.dart';
 part 'sheep_body.dart';
 
 enum SheepState {
@@ -192,11 +193,16 @@ class Sheep extends GameObject {
     collisionDetectionPoint.y = -collisionDetectionPoint.y;
 
     // checks if it is on a grass patch
-    for (ISurface grassPatch in global.grassController.grassPaches) {
+    for (Grass grassPatch in global.grassController.grassPaches) {
       for (math_util.Triangle triangle
           in grassPatch.getCollisionDetectionTriangles()) {
         if (math_util.isPointInTriangle(collisionDetectionPoint, triangle)) {
-          state = SheepState.eating;
+          if (grassPatch.ammountOfGarass > 0) {
+            state = SheepState.eating;
+          } else {
+            state = SheepState.moving;
+          }
+          grassPatch.numOfSheepOnGrass++;
           return;
         }
       }

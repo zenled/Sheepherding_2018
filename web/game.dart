@@ -44,7 +44,7 @@ class Game {
   InputHandler _inputHandler;
 
   Timer _timer;
-  Timer _sheepTimer;
+  Timer _stateUpdateTimer;
 
   // game objects
   RootObject rootObject;
@@ -104,7 +104,7 @@ class Game {
     _uniformLocationSampler =
         gl.getUniformLocation(_program, vertex_shader.uniform_name_sampler);
 
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.8, 1.0, 1.0, 1.0);
 
     // inits inputHandler
     _inputHandler = new InputHandler(window);
@@ -153,15 +153,6 @@ class Game {
     mainCamera.updatePMatrix();
 
     rootObject.draw();
-
-    // Lake lake = lakeController.lakes.first;
-    // for (math_util.Triangle triangle in lake.getCollisionDetectionTriangles()) {
-    //   bool collision = math_util.isPointInTriangle(
-    //       new math_util.Point2D(player.x, player.z), triangle);
-    //   if (collision){
-    //     print("Collision");
-    //   }
-    // }
   }
 
   void _handleUserInput() {
@@ -176,7 +167,7 @@ class Game {
   void startGame() {
     window.animationFrame.then(_tick);
 
-    _sheepTimer = new Timer.periodic(new Duration(seconds: 1), _sheepTimerTick);
+    _stateUpdateTimer = new Timer.periodic(new Duration(seconds: 1), _sheepTimerTick);
   }
 
   void _tick(_) {
@@ -188,6 +179,7 @@ class Game {
 
   void _sheepTimerTick(_) {
     herdController.updateHerdMembersState();
+    grassConroller.updateGrassPachesState();
   }
 
   int get attributePointerVertex => _attributePointerVertex;

@@ -3,7 +3,7 @@ library world;
 import '../game_object.dart';
 
 class World extends GameObject {
-  static const size = 50.0;
+  static const size = 100.0;
 
   World() {
     List<double> vertices = <double>[
