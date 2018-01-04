@@ -12,10 +12,10 @@ class GrassController {
   GameObject rootObject;
 
   GrassController(this.rootObject) {
-    _createLakes();
+    _createGrassPaches();
   }
 
-  void _createLakes() {
+  void _createGrassPaches() {
     for (int i = 0; i < grass_verteces.length; i++) {
       // transforms all verteces to double
       List<double> verteces = grass_verteces[i].map((num n) {

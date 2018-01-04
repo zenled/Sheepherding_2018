@@ -6,8 +6,8 @@ import '../game_objects/sheep/i_sheep_herder.dart';
 
 const _creator_num_of_sheep = 9;
 const _creator_sheep_in_row = 3;
-const _creator_sheep0_x = -5.0;
-const _creator_sheep0_z = -10.0;
+const _creator_sheep0_x = -2.0;
+const _creator_sheep0_z = -5.0;
 const _creator_distance = 2.0;
 
 const walking_plane_y = 1.1;

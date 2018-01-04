@@ -14,8 +14,8 @@ class Player extends GameObject implements ISheepHerder {
   static const zSpeed = 0.04;
 
   static const initialPositionX = 0.0;
-  static const initialPositionY = 5.0;
-  static const initialPositionZ = 0.0;
+  static const initialPositionY = 10.0;
+  static const initialPositionZ = 15.0;
 
   static const yRotationSpeed = 2.0;
 
@@ -112,7 +112,6 @@ class Player extends GameObject implements ISheepHerder {
 
   // ISheepHerder --------------------------------------------------------------------
 
-  // TODO: implement rotation
   @override
   double get rotation => rotationY;
 }

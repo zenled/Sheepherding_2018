@@ -22,7 +22,7 @@ enum SheepState {
 
 class Sheep extends GameObject {
   // [herder] must be less than [attention_distance] away from Sheep in order for sheep to respond to it
-  static const attention_distance = 30.0;
+  static const attention_distance = 20.0;
 
   // MoveAway (from [herder]) consts
   static const moveAway_maxRotation = 5.0;
@@ -97,16 +97,24 @@ class Sheep extends GameObject {
     addChild(legFR);
   }
 
+  @override
+  void draw(){
+    if (state == SheepState.dead){
+      return;
+    }
+    else {
+      super.draw();
+    }
+  }
+
   void move() {
-    // TODO
-    //return;
 
     if (state == SheepState.drowning) {
       translateY(-drowning_speed);
       if (y < -1.0){
         state = SheepState.dead;
-        return;
       }
+      return;
     }
 
     if (state == SheepState.dead){
