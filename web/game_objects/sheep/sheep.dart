@@ -9,6 +9,8 @@ import '../../global.dart' as global;
 import '../world/i_surface.dart';
 
 import 'i_sheep_herder.dart';
+import 'sheep_leg.dart';
+import 'sheep_head.dart';
 part 'sheep_body.dart';
 
 enum SheepState {
@@ -53,10 +55,50 @@ class Sheep extends GameObject {
     this.stateIndicator,
   ) {
     body = new SheepBody(this);
+    body.y = 0.2;
     addChild(body);
+
+    // Head
+    GameObject head = new SheepHead();
+    head.x = 0.0;
+    head.z = 0.5;
+    head.y = 0.2;
+
+    addChild(head);
+
+    // Legs
+    double legPosition = 0.41;
+    double legY = -0.25;
+
+    GameObject legBR = new SheepLeg();
+    legBR.x = -legPosition;
+    legBR.z = -legPosition;
+    legBR.y = legY;
+    addChild(legBR);
+
+    GameObject legBL = new SheepLeg();
+    legBL.x = legPosition;
+    legBL.z = -legPosition;
+    legBL.y = legY;
+    addChild(legBL);
+
+    GameObject legFL = new SheepLeg();
+    legFL.x = legPosition;
+    legFL.z = legPosition;
+    legFL.y = legY;
+    addChild(legFL);
+
+    GameObject legFR = new SheepLeg();
+    legFR.x = -legPosition;
+    legFR.z = legPosition;
+    legFR.y = legY;
+    addChild(legFR);
   }
 
   void move() {
+    // TODO
+    //return;
+
     if (state == SheepState.drowned || state == SheepState.dead) {
       return;
     }
@@ -170,7 +212,7 @@ class Sheep extends GameObject {
         break;
     }
 
-    if (hungerLevel > 100.0){
+    if (hungerLevel > 100.0) {
       hungerLevel = 100.0;
     }
   }

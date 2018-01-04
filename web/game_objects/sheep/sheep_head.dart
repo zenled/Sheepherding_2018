@@ -1,37 +1,35 @@
-part of Sheep;
+import '../game_object.dart';
 
-class SheepBody extends GameObject {
-  SheepBody(GameObject parent) {
-    this.parent = parent;
-
+class SheepHead extends GameObject {
+  SheepHead() {
     List<double> vertices = <double>[
       // Front face
-      0.0, 0.5, 0.0,
-      -0.5, -0.5, 0.5,
-      0.5, -0.5, 0.5,
+      0.0, 0.2, 0.0,
+      -0.2, -0.2, 0.2,
+      0.2, -0.2, 0.2,
 
       // Right face
-      0.0, 0.5, 0.0,
-      0.5, -0.5, 0.5,
-      0.5, -0.5, -0.5,
+      0.0, 0.2, 0.0,
+      0.2, -0.2, 0.2,
+      0.2, -0.2, -0.2,
 
       // Back face
-      0.0, 0.5, 0.0,
-      0.5, -0.5, -0.5,
-      -0.5, -0.5, -0.5,
+      0.0, 0.2, 0.0,
+      0.2, -0.2, -0.2,
+      -0.2, -0.2, -0.2,
 
       // Left face
-      0.0, 0.5, 0.0,
-      -0.5, -0.5, -0.5,
-      -0.5, -0.5, 0.5,
+      0.0, 0.2, 0.0,
+      -0.2, -0.2, -0.2,
+      -0.2, -0.2, 0.2,
 
       //  NOTE: Missing the bottom triangles :)
-      -0.5, -0.5, -0.5,
-      0.5, -0.5, -0.5,
-      0.5, -0.5, 0.5,
-      -0.5, -0.5, -0.5,
-      0.5, -0.5, 0.5,
-      -0.5, -0.5, 0.5,
+      -0.2, -0.2, -0.2,
+      0.2, -0.2, -0.2,
+      0.2, -0.2, 0.2,
+      -0.2, -0.2, -0.2,
+      0.2, -0.2, 0.2,
+      -0.2, -0.2, 0.2,
     ];
     super.setVertexBuffer(vertices);
 
@@ -67,6 +65,6 @@ class SheepBody extends GameObject {
       1.0, 1.0,
       0.0, 1.0
     ];
-    setTexture("crate.gif", textureCoord);
+    setTexture("galvanizedTexture.jpg", textureCoord);
   }
 }
